@@ -10,7 +10,7 @@ st.set_page_config(
 )
 
 # --- HELPER FUNCTION FOR PROJECT PAGES ---
-def show_project_page(project_name, problem_text, solution_text, mock_code, max_width=350):
+def show_project_page(project_name, problem_text, solution_text, mock_code, max_width=700):
     st.title(f"✨ {project_name}")
     st.write("---")
 
@@ -33,14 +33,14 @@ def show_project_page(project_name, problem_text, solution_text, mock_code, max_
             st.image(before_image_path, caption=f"{project_name} - Before", width=max_width)
         else:
             st.warning(f"Before image not found for {project_name} at `{before_image_path}`. Using a placeholder.")
-            st.image("https://via.placeholder.com/350x200.png?text=Before+Image+Coming+Soon", caption="Placeholder Before Image", width=max_width)
+            st.image("https://via.placeholder.com/700x400.png?text=Before+Image+Coming+Soon", caption="Placeholder Before Image", width=max_width)
 
     with col_after:
         if os.path.exists(after_image_path):
             st.image(after_image_path, caption=f"{project_name} - After", width=max_width)
         else:
             st.warning(f"After image not found for {project_name} at `{after_image_path}`. Using a placeholder.")
-            st.image("https://via.placeholder.com/350x200.png?text=After+Image+Coming+Soon", caption="Placeholder After Image", width=max_width)
+            st.image("https://via.placeholder.com/700x400.png?text=After+Image+Coming+Soon", caption="Placeholder After Image", width=max_width)
 
     st.subheader("💻 Code Highlight")
     st.code(mock_code, language="python")
@@ -132,7 +132,7 @@ st.title("Retail Pulse Dashboard")
 data = load_data("retail_sales.csv")
 st.line_chart(data.groupby('date')['sales'].sum())
 """,
-        max_width=350
+        max_width=700
     )
 
 elif selection == "Data Cleaner":
@@ -154,7 +154,7 @@ if uploaded_file:
     df = pd.read_csv(uploaded_file)
     st.dataframe(df.head())
 """,
-        max_width=350
+        max_width=700
     )
 
 elif selection == "Price Monitor":
@@ -179,7 +179,7 @@ if st.button("Monitor Price"):
     price = get_product_price(product_url)
     st.write(f"Current Price: {price}")
 """,
-        max_width=350
+        max_width=700
     )
 
 elif selection == "Invoice Bot":
@@ -206,5 +206,5 @@ if uploaded_file:
     extracted_text = extract_invoice_data(uploaded_file)
     st.text_area("Extracted Text", extracted_text, height=300)
 """,
-        max_width=350
+        max_width=700
     )
