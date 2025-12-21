@@ -10,7 +10,7 @@ st.set_page_config(
 )
 
 # --- HELPER FUNCTION FOR PROJECT PAGES ---
-def show_project_page(project_name, problem_text, solution_text, mock_code):
+def show_project_page(project_name, problem_text, solution_text, mock_code, max_width=350):
     st.title(f"✨ {project_name}")
     st.write("---")
 
@@ -20,14 +20,27 @@ def show_project_page(project_name, problem_text, solution_text, mock_code):
     st.subheader("🛠️ The Solution")
     st.success(solution_text)
 
-    st.subheader("🖼️ Project Snapshot")
-    image_path = f"images/{project_name.lower().replace(' ', '_')}.png"
+    st.subheader("🖼️ Project Snapshots: Before & After")
+    
+    base_image_name = project_name.lower().replace(' ', '_')
+    before_image_path = f"images/{base_image_name}_before.png"
+    after_image_path = f"images/{base_image_name}.png"
 
-    if os.path.exists(image_path):
-        st.image(image_path, caption=f"{project_name} Screenshot", width='stretch')
-    else:
-        st.warning(f"Image not found for {project_name} at `{image_path}`. Using a placeholder.")
-        st.image("https://via.placeholder.com/700x400.png?text=Image+Coming+Soon", caption="Placeholder Image", width='stretch')
+    col_before, col_after = st.columns(2)
+
+    with col_before:
+        if os.path.exists(before_image_path):
+            st.image(before_image_path, caption=f"{project_name} - Before", width=max_width)
+        else:
+            st.warning(f"Before image not found for {project_name} at `{before_image_path}`. Using a placeholder.")
+            st.image("https://via.placeholder.com/350x200.png?text=Before+Image+Coming+Soon", caption="Placeholder Before Image", width=max_width)
+
+    with col_after:
+        if os.path.exists(after_image_path):
+            st.image(after_image_path, caption=f"{project_name} - After", width=max_width)
+        else:
+            st.warning(f"After image not found for {project_name} at `{after_image_path}`. Using a placeholder.")
+            st.image("https://via.placeholder.com/350x200.png?text=After+Image+Coming+Soon", caption="Placeholder After Image", width=max_width)
 
     st.subheader("💻 Code Highlight")
     st.code(mock_code, language="python")
@@ -118,7 +131,8 @@ def load_data(file_path):
 st.title("Retail Pulse Dashboard")
 data = load_data("retail_sales.csv")
 st.line_chart(data.groupby('date')['sales'].sum())
-"""
+""",
+        max_width=350
     )
 
 elif selection == "Data Cleaner":
@@ -139,7 +153,8 @@ uploaded_file = st.file_uploader("Upload CSV", type=["csv"])
 if uploaded_file:
     df = pd.read_csv(uploaded_file)
     st.dataframe(df.head())
-"""
+""",
+        max_width=350
     )
 
 elif selection == "Price Monitor":
@@ -163,7 +178,8 @@ product_url = st.text_input("Enter Product URL:")
 if st.button("Monitor Price"):
     price = get_product_price(product_url)
     st.write(f"Current Price: {price}")
-"""
+""",
+        max_width=350
     )
 
 elif selection == "Invoice Bot":
@@ -189,5 +205,6 @@ if uploaded_file:
     st.image(uploaded_file, caption="Uploaded Invoice", width='stretch')
     extracted_text = extract_invoice_data(uploaded_file)
     st.text_area("Extracted Text", extracted_text, height=300)
-"""
+""",
+        max_width=350
     )
